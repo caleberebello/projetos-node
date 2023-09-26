@@ -1,7 +1,9 @@
 const express = require("express");
+const cors = require("cors");
 const mariadb = require("mariadb");
 
 const app = express();
+app.use(cors());
 const pool = mariadb.createPool({
     host: '192.168.0.121',
     user: 'dbteste2',
@@ -10,6 +12,19 @@ const pool = mariadb.createPool({
 });
 
 app.use(express.json());
+
+app.get("/teste", async(req, res) => {
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query(`SELECT * FROM teste.pessoa`);
+        const jsonS = JSON.stringify(rows);
+        res.send(jsonS);
+    }
+    catch(e){
+
+    }
+});
 
 app.get("/teste/:id", async(req, res) =>{
     let conn;
