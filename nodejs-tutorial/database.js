@@ -3,9 +3,9 @@ const mariadb = require("mariadb");
 
 const app = express();
 const pool = mariadb.createPool({
-    host: 'ip',
-    user: 'usuário',
-    password: 'senha',
+    host: '192.168.0.121',
+    user: 'dbteste2',
+    password: 'Gbr123456',
     connectionLimit: 5,
 });
 
