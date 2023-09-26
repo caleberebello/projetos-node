@@ -22,7 +22,7 @@ app.get("/teste", async(req, res) => {
         res.send(jsonS);
     }
     catch(e){
-
+        console.log(e);
     }
 });
 
