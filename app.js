@@ -1,8 +1,15 @@
 const express = require("express");
 const { randomUUID } = require("crypto");
 const fs = require("fs");
+const mariadb = require("mariadb");
 
 const app = express();
+const pool = mariadb.createPool({
+    host: '192.168.0.121',
+    user: 'dbteste2',
+    password: 'Gbr123456',
+    connectionLimit: 5,
+});
 
 app.use(express.json());
 
@@ -70,6 +77,21 @@ app.delete("/products/:id", (req, res) => {
     productFile();
 
     return res.json({message: "Produto removido com sucesso!"})
+});
+
+app.post("/teste", async(req, res) =>{
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query(`SELECT nome FROM teste.pessoa WHERE id='1'`);
+        console.log(rows);
+        const jsonS = JSON.stringify(rows);
+        res.writeHead(200, {'Content-Type':'text/html'});
+        res.end(jsonS);
+    }
+    catch(e){
+
+    }
 });
 
 function productFile() {
