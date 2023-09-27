@@ -8,12 +8,11 @@ const pool = mariadb.createPool({
     host: '192.168.0.121',
     user: 'dbteste2',
     password: 'Gbr123456',
-    connectionLimit: 5,
 });
 
 app.use(express.json());
 
-app.get("/teste", async(req, res) => {
+app.get("/teste/retornar", async(req, res) => {
     let conn;
     try{
         conn = await pool.getConnection();
@@ -33,7 +32,6 @@ app.get("/teste/:id", async(req, res) =>{
         conn = await pool.getConnection();
         const rows = await conn.query(`SELECT * FROM teste.pessoa WHERE id='` + id + `'`);
         const jsonS = JSON.stringify(rows);
-        res.writeHead(200, {'Content-Type':'text/html'});
         res.end(jsonS);
     }
     catch(e){
@@ -41,15 +39,16 @@ app.get("/teste/:id", async(req, res) =>{
     }
 });
 
-app.post("/teste", async(req, res) => {
+app.post("/teste/criar", async(req, res) => {
     let conn;
-    const { nome, idade, id } = req.body;
+    const nome = req.body.nome;
+    const idade = req.body.idade;
+    const id = req.body.id;
     try{
         conn = await pool.getConnection();
         const rows = await conn.query(`INSERT INTO teste.pessoa (nome, idade, id) VALUES ('` + nome + `',` + idade + `,` + id + `)`);
         const jsonS = JSON.stringify(rows);
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(jsonS);
+        res.send(jsonS);
     } catch (e) {
         
     }

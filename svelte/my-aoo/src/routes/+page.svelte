@@ -1,9 +1,11 @@
 <script>
+    let plataforma = "Ambiente de Testes";
     let teste = "";
-
+    let novoDado = "";
+    
     async function retornaBanco() {
         try{
-            const response = await fetch("http://localhost:4003/teste");
+            const response = await fetch("http://localhost:4003/teste/retornar");
             const data = await response.json();
             teste = data;
         }
@@ -12,9 +14,47 @@
             console.log(e);
         }
     }
+
+    async function adicionaBanco() {
+        try {
+            const data = new FormData();
+            data.append({nome, idade, id}, JSON.stringify(novoDado));
+            await fetch("http://localhost:4003/teste/criar", {
+                method: 'POST',
+                body: data
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                alert(data);
+                retornaBanco();
+            });
+        } catch(e) {
+            console.log(e);
+        }
+    }
 </script>
 
-<button on:click={retornaBanco}>Teste</button>
+<h2>{plataforma}</h2>
+
+<form action="http://localhost:4003/teste/criar" on:submit={adicionaBanco}>
+    <label for="nome">
+        <p>Nome:</p>
+    </label>
+    <input type="text" id="nome" name="nome">
+    <label for="idade">
+        <p>Idade:</p>
+    </label>
+    <input type="number" id="idade" name="idade">
+    <label for="id">
+        <p>ID:</p>
+    </label>
+    <input type="number" id="id" name="id">
+    <input type="submit" value="Nova Entrada">
+</form>
+
+<br>
+
+<button on:click={retornaBanco}>Mostrar Dados</button>
 {#each teste as testes (testes.id)}
     <div class="card">
         <h2>Nome: {testes.nome}</h2>
@@ -35,6 +75,6 @@
 
     h2,p {
         font-family: 'Poppins', sans-serif;
-        font-size: 20px;
     }
+
 </style>
