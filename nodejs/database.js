@@ -35,22 +35,22 @@ app.get("/teste/:id", async(req, res) =>{
         res.end(jsonS);
     }
     catch(e){
-        console.log(e);
+        res.end(e);
     }
 });
 
 app.post("/teste/criar", async(req, res) => {
     let conn;
-    const nome = req.body.nome;
+    const nome = req.body.nome ;
     const idade = req.body.idade;
-    const id = req.body.id;
     try{
         conn = await pool.getConnection();
-        const rows = await conn.query(`INSERT INTO teste.pessoa (nome, idade, id) VALUES ('` + nome + `',` + idade + `,` + id + `)`);
+        const rows = await conn.query(`INSERT INTO teste.pessoa (nome, idade) VALUES ('` + nome + `',` + idade + `)`);
         const jsonS = JSON.stringify(rows);
         res.send(jsonS);
     } catch (e) {
-        
+        res.send(e);
+        console.log(e);
     }
 })
 

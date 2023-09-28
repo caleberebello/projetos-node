@@ -1,7 +1,10 @@
 <script>
     let plataforma = "Ambiente de Testes";
     let teste = "";
-    let novoDado = "";
+    const banco = {
+        kill: '',
+        age: ''
+    }
     
     async function retornaBanco() {
         try{
@@ -17,17 +20,18 @@
 
     async function adicionaBanco() {
         try {
-            const data = new FormData();
-            data.append({nome, idade, id}, JSON.stringify(novoDado));
             await fetch("http://localhost:4003/teste/criar", {
                 method: 'POST',
-                body: data
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome: kill,
+                    idade: age
+                })
             })
-            .then(response=>response.json())
-            .then(data=>{
-                alert(data);
-                retornaBanco();
-            });
+            .then(response => response.json())
+            .then(result => console.log(result))
         } catch(e) {
             console.log(e);
         }
@@ -36,21 +40,23 @@
 
 <h2>{plataforma}</h2>
 
-<form action="http://localhost:4003/teste/criar" on:submit={adicionaBanco}>
-    <label for="nome">
-        <p>Nome:</p>
-    </label>
-    <input type="text" id="nome" name="nome">
-    <label for="idade">
-        <p>Idade:</p>
-    </label>
-    <input type="number" id="idade" name="idade">
-    <label for="id">
-        <p>ID:</p>
-    </label>
-    <input type="number" id="id" name="id">
-    <input type="submit" value="Nova Entrada">
-</form>
+<section>
+    <form>
+        <div>
+            <label for="kill">
+                <p>Nome:</p>
+            </label>
+            <input type="text" id="kill" bind:value={banco.kill}>
+        </div>
+        <div>
+            <label for="age">
+                <p>Idade:</p>
+            </label>
+            <input type="number" id="age" bind:value={banco.age}>
+        </div>
+        <button on:click="{adicionaBanco}">Nova Entrada</button>
+    </form>
+</section>
 
 <br>
 
@@ -76,5 +82,7 @@
     h2,p {
         font-family: 'Poppins', sans-serif;
     }
+
+    label{font-weight:bolder;display:block;margin-bottom:4px}
 
 </style>
