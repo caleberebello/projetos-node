@@ -5,9 +5,9 @@ const mariadb = require("mariadb");
 const app = express();
 app.use(cors());
 const pool = mariadb.createPool({
-    host: '192.168.0.121',
-    user: 'dbteste2',
-    password: 'Gbr123456',
+    host: '*',
+    user: '*',
+    password: '*',
 });
 
 app.use(express.json());
