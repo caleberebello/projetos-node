@@ -25,32 +25,47 @@ app.get("/teste/retornar", async(req, res) => {
     }
 });
 
-app.get("/teste/:id", async(req, res) =>{
+app.put("/teste/alterar/:id", async(req, res) => {
     let conn;
     const { id } = req.params;
+    const nome = req.body.altera.kill;
+    const idade = req.body.altera.age;
     try{
         conn = await pool.getConnection();
-        const rows = await conn.query(`SELECT * FROM teste.pessoa WHERE id='` + id + `'`);
+        const rows = await conn.query(`UPDATE teste.pessoa SET nome = '${nome}', idade = ${idade} WHERE id='${id}'`)
         const jsonS = JSON.stringify(rows);
-        res.end(jsonS);
+        res.send(jsonS);
+        console.log(jsonS);
+    } catch (e) {
+        res.send(e);
+        console.log(e);
     }
-    catch(e){
-        res.end(e);
-    }
-});
+})
 
 app.post("/teste/criar", async(req, res) => {
     let conn;
-    const nome = req.body.nome ;
-    const idade = req.body.idade;
+    const nome = req.body.banco.kill;
+    const idade = req.body.banco.age;
     try{
         conn = await pool.getConnection();
-        const rows = await conn.query(`INSERT INTO teste.pessoa (nome, idade) VALUES ('` + nome + `',` + idade + `)`);
+        const rows = await conn.query(`INSERT INTO teste.pessoa (nome, idade) VALUES ('${nome}', ${idade})`);
         const jsonS = JSON.stringify(rows);
         res.send(jsonS);
     } catch (e) {
         res.send(e);
-        console.log(e);
+    }
+})
+
+app.delete("/teste/deletar/:id", async(req,res) => {
+    let conn;
+    const { id } = req.params;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query(`DELETE FROM teste.pessoa WHERE id = '${id}'`);
+        const jsonS = JSON.stringify(rows);
+        res.send(jsonS);
+    }catch(e){
+        res.send(e);
     }
 })
 

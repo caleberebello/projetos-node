@@ -1,10 +1,18 @@
 <script>
     let plataforma = "Ambiente de Testes";
     let teste = "";
-    const banco = {
+    let error = "";
+    let banco = {
         kill: '',
         age: ''
     }
+    let altera = {
+        kill: '',
+        age: ''
+    }
+    let alterar = '';
+    let deletar = '';
+    let mensagem = "";
     
     async function retornaBanco() {
         try{
@@ -25,15 +33,47 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    nome: kill,
-                    idade: age
-                })
+                body: JSON.stringify({banco})
             })
             .then(response => response.json())
-            .then(result => console.log(result))
+            .then(() => {
+                mensagem = "Entrada adicionada"
+            })
+        } catch(e) {
+            error = e;
+            console.log(e);
+        }
+    }
+
+    async function alterarBanco() {
+        try {
+            await fetch("http://localhost:4003/teste/alterar/"+alterar, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({altera})
+            })
+            .then(response => response.json())
+            .then(() => {
+                mensagem = "Entrada alterada"
+            })
+        } catch(e) {
+            error = e;
+            console.log(e);
+        }
+    }
+
+    async function deletarBanco() {
+        try {
+            await fetch("http://localhost:4003/teste/deletar/"+deletar, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
         } catch(e) {
             console.log(e);
+            error = e;
         }
     }
 </script>
@@ -56,9 +96,47 @@
         </div>
         <button on:click="{adicionaBanco}">Nova Entrada</button>
     </form>
+    <p>{error}</p>
+</section>
+
+<section>
+    <form>
+        <div>
+            <label for="id">
+                <p>ID da entrada que deseja alterar:</p>
+            </label>
+            <input type="number" id="id" bind:value={alterar}>
+            <label for="kill">
+                <p>Nome: </p>
+            </label>
+            <input type="text" id="kill" bind:value={altera.kill}>
+            <label for="age">
+                <p>Idade: </p>
+            </label>
+            <input type="number" id="age" bind:value={altera.age}>
+        </div>
+        
+        <button on:click="{alterarBanco}">Alterar Entrada</button>
+    </form>
+    <p>{error}</p>
+</section>
+
+<section>
+    <form>
+        <div>
+            <label for="id">
+                <p>ID da entrada que deseja deletar:</p>
+            </label>
+            <input type="number" id="id" bind:value={deletar}>
+        </div>
+        <button on:click="{deletarBanco}">Deletar Entrada</button>
+    </form>
+    <p>{error}</p>
 </section>
 
 <br>
+
+<p>{mensagem}</p>
 
 <button on:click={retornaBanco}>Mostrar Dados</button>
 {#each teste as testes (testes.id)}
