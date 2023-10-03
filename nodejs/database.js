@@ -7,7 +7,7 @@ app.use(cors());
 const pool = mariadb.createPool({
     host: '*',
     user: '*',
-    password: '*',
+    password: '*'
 });
 
 app.use(express.json());
