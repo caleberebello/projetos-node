@@ -64,8 +64,8 @@ io.on("connection", function(socket){
 
     socket.on("disconnect", function(){
         delete usuarios[socket.apelido];
-        io.socket.emit("atualizar usuarios", Object.keys(usuarios));
-        io.socket.emit("atualizar mensagens", {msg: "[ " + pegarDataAtual() + " ] " + socket.apelido + " saiu da sala", tipo: 'sistema'});
+        io.sockets.emit("atualizar usuarios", Object.keys(usuarios));
+        io.sockets.emit("atualizar mensagens", {msg: "[ " + pegarDataAtual() + " ]: " + socket.apelido + " saiu da sala", tipo: 'sistema'});
     });
 });
 
