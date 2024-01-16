@@ -19,16 +19,16 @@
         <th>Estado</th>
       </tr>
       <% if (userData.length !== 0) { %>
-        <% userData.forEach(async function(data) { %>
+        <% userData.forEach(async function(rows) { %>
           <tr>
-            <td><%= data.nome %></td>
-            <td><%= data.cpf %></td>
-            <td><%= data.nasc %></td>
-            <td><%= data.email %></td>
-            <td><%= data.tel %></td>
-            <td><%= data.ender %></td>
-            <td><%= data.cidade %></td>
-            <td><%= data.estado %></td>
+            <td><%= rows.nome %></td>
+            <td><%= rows.cpf %></td>
+            <td><%= rows.nasc %></td>
+            <td><%= rows.email %></td>
+            <td><%= rows.tel %></td>
+            <td><%= rows.ender %></td>
+            <td><%= rows.cidade %></td>
+            <td><%= rows.estado %></td>
           </tr>
         <% }); %>
       <% } else { %>
